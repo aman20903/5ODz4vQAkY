@@ -1,7 +1,26 @@
 const express = require('express');
-const app= express();
-const port=3000;
+const bodyParser = require('body-parser');
+const authRoutes = require('./routes/auth');
 
-app.get('/', (req,res) => res.send('Hello World'));
+const app = express();
+const PORT = 3000;
 
-app.listen(port, () => console.log(`Server Running on http://localhost:${port}`))
+app.use(bodyParser.json());
+app.use('/auth', authRoutes);
+app.use(express.static('public'));
+
+app.get('/', (req, res) => res.send('Welcome to the Auth System!'));
+
+app.get('/signup.html', (req, res) => {
+    res.sendFile(__dirname + '/public/signup.html');
+});
+
+app.get('/login.html', (req, res) => {
+    res.sendFile(__dirname + '/public/login.html');
+});
+
+app.get('/success.html', (req, res) => {
+    res.sendFile(__dirname + '/public/success.html');
+});
+
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
